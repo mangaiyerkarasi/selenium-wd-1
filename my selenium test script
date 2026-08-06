@@ -1,0 +1,25 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
+
+def test_google_search():
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+
+    try:
+        driver.get("https://www.google.com")
+        search_box = driver.find_element(By.NAME, "q")
+        search_box.send_keys("Selenium Python")
+        search_box.send_keys(Keys.RETURN)
+
+        driver.implicitly_wait(5)
+        assert "selenium python" in driver.title.lower() or "selenium python" in driver.page_source.lower()
+        print("Google search test passed.")
+    finally:
+        driver.quit()
+
+
+if __name__ == "__main__":
+    test_google_search()
